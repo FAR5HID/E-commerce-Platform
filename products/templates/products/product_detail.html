@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="text-center">Item Details</h2>
+<div class="album py-5 bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="card mb-3 w-100">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+            <img src={{ object.image.url }} class="card-img">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ object.name }}</h5>
+              <div class="price-wrap h5">
+                <span class="price-new">Tk. {{ object.price }} </span>
+              </div>
+              <div>
+                <p class="card-text font-weight-bold font-italic">Added By: {{ object.owner }}</p>
+              </div>
+              <div>
+                <p class="card-text">
+                    Tags: 
+                    {% for tag in object.tags.all %}
+                    <a href="{% url 'product-tag-list' tag.slug %}">#{{ tag }}</a> 
+                    {% endfor %}
+                </p>
+            </div>
+              <p class="card-text">{{ object.description }}</p>
+              <p class="card-text"><small class="text-muted">{{ object.date_posted.date }}</small></p>
+              
+              <div class="text-right">
+                {% if object.owner == user %}
+                <a class="btn btn-light mt-1 mb-1" href="{% url 'product-update' object.id %}" role="button">Update</a>
+                <a class="btn btn-light mt-1 mb-1" href="{% url 'product-delete' object.id %}" role="button">Delete</a>
+                {% else %}
+                <div class="text-right">
+                  <button data-product={{product.id}} data-action="add" class="btn btn-primary btn-margin-right update-cart">
+                      Add to cart
+                  </button>
+                </div>
+                {% endif %}
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

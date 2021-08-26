@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 col-md-12">
+            <table class="table table-hover table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th class="text-center">Price</th>
+                        <th class="text-center">Total</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td class="col-sm-8 col-md-8">
+                        <div class="media">
+                            <a class="thumbnail pull-left" href="{% url 'product-detail' item.product.id %}"> <img class="media-object" src={{ item.product.image.url }} style="width: 72px; height: 72px;"> </a>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="{% url 'product-detail' item.product.id %}">{{ item.product.name }}</a></h4>
+                                <h6 class="media-heading"> by {{ item.product.owner }}</h6>
+                            </div>
+                        </div></td>
+                        <td class="col-sm-1 col-md-2" style="text-align: center">
+                        <p class="quantity">{{ item.quantity }}</p>
+                        <div class="quantity">
+                            <img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static 'arrowup.png' %}">
+                            <img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static 'arrowdown.png' %}">
+                        </div>
+                        </td>
+                        <td class="col-sm-1 col-md-2 text-center"><strong>{{ item.product.price }}</strong></td>
+                        <td class="col-sm-1 col-md-2 text-center"><strong>{{ item.get_total }}</strong></td>
+                        <td class="col-sm-1 col-md-2">
+                        <button data-product="{{item.product.id}}" data-action="delete" type="button" class="btn btn-danger btn-block chg-quantity update-cart">Remove
+                        </button></td>
+                    </tr>
+                    {% endfor %}
+                    
+                    <tr>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>   </td>
+                        <td><h5>Subtotal</h5></td>
+                        <td class="text-right"><h5><strong>{{ order.get_cart_total }}</strong></h5></td>
+                    </tr>
+                    <tr>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>   </td>
+                        <td><h5>VAT</h5></td>
+                        <td class="text-right"><h5><strong>{{ order.get_cart_vat }}</strong></h5></td>
+                    </tr>
+                    <tr>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>   </td>
+                        <td><h3>Total</h3></td>
+                        <td class="text-right"><h3><strong>{{ order.get_cart_totalwithvat }}</strong></h3></td>
+                    </tr>
+                    <tr>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>
+                        <a href="{% url 'home' %}"><button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
+                        </button></a></td>
+                        <td>
+                        <a href="{% url 'checkout' %}"><button type="button" class="btn btn-success">
+                            Checkout <span class="glyphicon glyphicon-play"></span>
+                        </button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
